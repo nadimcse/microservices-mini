@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  service-registry:
+    image: doc185174/service-registry:latest
+    ports:
+          - '8761:8761'
+          - '18787:8767'
+    hostname: service-registry
+    container_name: service-registry
+    build: ../service-registry
+  inventory-service:
+    image: doc185174/inventory-service:latest
+    ports:
+          - '8182:8182'
+          - '28787:8787'
+    container_name: inventory-service
+    build: ../inventory-service
+    hostname: inventory-service
+    links:
+      - service-registry
+#  catalog-service:
+#    image: doc185174/catalog-service:latest
+#    ports:
+#          - '8183:8183'
+#          - '38787:8787'
+#    container_name: catalog-service
+#    hostname: catalog-service
+#    build: ../catalog-service
+#    links:
+#     - service-registry
+
+  gateway-service:
+    image: doc185174/gateway-service:latest
+    ports:
+          - '9000:9000'
+          - '48787:8787'
+    container_name: gateway-service
+    hostname: gateway-service
+    build: ../gateway-service
+    links:
+      - service-registry
+
